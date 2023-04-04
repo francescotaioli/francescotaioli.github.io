@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="{{ page.lang | default: site.lang | default: "en" }}">
+
+  {%- include head.html -%}
+
+  <body>
+
+    {%- include header.html -%}
+
+    <main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        {{ content }}
+      
+
+<div class="home">
+   
+      <!-- INIT -->
+      <div class="container">
+        <div class="row">
+          <div class="col align-self-center">
+            <div class="col-auto text-center">
+                <h1 class="page-heading">Francesco Taioli</h1>
+                <span class="d-block text-center" style="margin-top:10px;" >PhD student in Artificial Intelligence</span>
+                       
+                <img class="rounded-circle mx-auto d-block" src="images/francesco_taioli.png" alt="Francesco Taioli" height="200" width="200">
+                <span class="d-block text-center" style="margin-top:10px;" >Member of <a href="https://intelligolabs.net/">IntelliGO Lab</a></span>
+                
+            </div>
+            
+          </div>
+          <div class="col-md" style="text-align: justify;">
+            I am a PhD Student of the National PhD programme in Artificial Intelligence at the Polytechnic of Turin in
+             collaboration with the University of Verona, supervised by prof. <a href="https://scholar.google.com/citations?user=LbgTPRwAAAAJ&hl=en" >Marco Cristani</a>
+              and prof. <a href="https://scholar.google.co.uk/citations?user=KHAIAA8AAAAJ&hl=en" >Alessandro Farinelli</a>.
+            <br>
+            I’m interested in the whole area of Deep Learning, 
+            with a focus on improving the autonomy of intelligent agents by proposing
+             a joint solution for both visual perception (thus combining multimodal data from the agent)
+              and motion planning.
+            
+            <h4 style="margin-top:10px;">
+                Research Interests
+            </h4>
+          
+                <ul>
+                    <li>Deep Learning</li>
+                    <li>Computer Vision</li>
+                    <li>Embodied AI</li>
+                    <li>Autonomous Vehicles</li>
+                </ul>
+            </li>
+          </div>
+        </div>
+      </div>
+      <!-- end -->
+
+
+
+  {%- if page.title -%}
+    <h1 class="page-heading">{{ page.title }}</h1>
+  {%- endif -%}
+
+  {{ content }}
+
+  {%- if site.posts.size > 0 -%}
+    <h2 class="post-list-heading">{{ page.list_title | default: "Publications" }}</h2>
+    <ul class="post-list">
+      {%- for post in site.posts -%}
+      <li>
+        {%- assign date_format = site.minima.date_format | default: "%b %-d, %Y" -%}
+        <span class="post-meta">{{ post.date | date: date_format }}</span>
+        <h3>
+          <a class="post-link" href="{{ post.url | relative_url }}">
+            {{ post.title | escape }}
+          </a>
+        </h3>
+        {%- if site.show_excerpts -%}
+          {{ post.excerpt }}
+        {%- endif -%}
+      </li>
+      {%- endfor -%}
+    </ul>
+  {%- endif -%}
+
+</div>
+</div>
+</main>
+
+{%- include footer.html -%}
+
+</body>
+
+</html>
