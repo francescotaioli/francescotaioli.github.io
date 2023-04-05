@@ -21,7 +21,7 @@
 
 email: francesco.taioli@univr.it
 description: >- # this means to ignore newlines until "baseurl:"
-  PhD student in AI - francesco.taioli@univr.it
+  PhD student in AI <br> francesco.taioli@univr.it  francesco.taioli@polito.it
 baseurl: "" # the subpath of your site, e.g. /blog
 url: "http://francescotaioli.com" # the base hostname & protocol for your site, e.g. http://example.com
 twitter_username: TaioliF
