@@ -12,4 +12,12 @@
     {%- if jekyll.environment == 'production' and site.google_analytics -%}
       {%- include google-analytics.html -%}
     {%- endif -%}
+    <link rel="icon" type="image/x-icon" href="{{ "/images/deep-learning.png" | relative_url }}">
+    <style>
+      a:link {
+      color: rgb(26, 31, 114) !important;
+      background-color: transparent;
+      text-decoration: none;
+    }
+    </style>
   </head>
