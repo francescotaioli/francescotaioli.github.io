@@ -23,7 +23,7 @@
                 <span class="d-block text-center" style="margin-top:10px;" >PhD student in Artificial Intelligence</span>
                        
                 <img class="rounded-circle mx-auto d-block" src="images/francesco_taioli.avif" alt="Francesco Taioli" height="200" width="200">
-                <span class="d-block text-center" style="margin-top:10px;" >Member of <a href="https://intelligolabs.net/">IntelliGO Lab</a></span>
+                <span class="d-block text-center" style="margin-top:10px;" >Member of <a href="https://intelligolabs.net/">IntelliGO Labs</a></span>
                 
             </div>
             
@@ -62,6 +62,17 @@
 
   {{ content }}
 
+  <h3 class="">News</h3>
+  <ul class="post-list">
+    <li>
+      <span class="post-meta">2023-07</span>
+      <h5>I attended the International Computer Vision Summer School <a href="https://iplab.dmi.unict.it/icvss2023/Home" >(ICVSS)</a> </h5>
+    </li>  
+  </ul>
+  <hr>
+ 
+
+
   {%- if site.posts.size > 0 -%}
     <a href="https://scholar.google.com/citations?user=XxeU3kAAAAAJ&hl=it"><h2 class="post-list-heading">{{ page.list_title | default: "Publications" }}</h2></a>
     <hr>
@@ -69,7 +80,7 @@
       {%- for post in site.posts -%}
       <li>
         {%- assign date_format = site.minima.date_format | default: "%b %-d, %Y" -%}
-        <span class="post-meta">{{ post.date | date: date_format }}</span>
+        <span class="post-meta">{{ post.date | date: date_format }} - <span class="badge badge-success">{{ post.conference }}</span></span>
         <h3>
           <a class="post-link" href="{{ post.url | relative_url }}">
             {{ post.title | escape }}
@@ -77,6 +88,10 @@
         </h3>
         {%- if site.show_excerpts -%}
           {{ post.excerpt }}
+        {%- endif -%}
+
+        {%- if post.authors -%}
+          <h6>{{ post.authors }}</h6>
         {%- endif -%}
       </li>
       {%- endfor -%}

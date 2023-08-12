@@ -2,7 +2,8 @@
 layout: post
 title:  "SCENE-pathy : Capturing the Visual Selective Attention of People Towards Scene Elements"
 date:   2023-07-01 17:41:26 +0200
-categories: Neuro-Symbolic AI
+categories: Computer vision
+conference: ICIAP
 ---
 <!-- 1 Luglio -->
 <b><a href="https://intelligolabs.github.io/scene-pathy">Project Website</a></b> <br> 
