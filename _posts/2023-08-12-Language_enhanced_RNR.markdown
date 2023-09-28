@@ -3,7 +3,8 @@ layout: post
 title:  "Language-enhanced RNR-Map: Querying Renderable Neural Radiance Field maps with natural language"
 date:   2023-08-11 17:41:26 +0200
 categories: Computer Vision
-conference: VLAR @ ICCVw 2023
+conference: ICCV - Vision And Language Algorithmic Reasoning Workshop
+authors: <b>Francesco Taioli</b>, et al.
 ---
 
 <b><a href="https://intelligolabs.github.io/Le-RNR-Map/">Project Website</a></b> <br> 

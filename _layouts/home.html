@@ -29,7 +29,7 @@
             
           </div>
           <div class="col-md" style="text-align: justify;">
-            I am a PhD Student of the National PhD programme in Artificial Intelligence at the Polytechnic of Turin in
+            I am a first year PhD Student of the National PhD programme in Artificial Intelligence at the Polytechnic of Turin in
              collaboration with the University of Verona, supervised by prof. <a href="https://scholar.google.com/citations?user=LbgTPRwAAAAJ&hl=en" >Marco Cristani</a>
               and prof. <a href="https://scholar.google.co.uk/citations?user=KHAIAA8AAAAJ&hl=en" >Alessandro Farinelli</a>.
             <br>
@@ -48,6 +48,23 @@
                     <li>Embodied AI</li>
                     <li>Autonomous Vehicles</li>
                 </ul>
+
+                <!-- <h4 style="margin-top:10px;">
+                  Contacts
+              </h4>
+              <ul>
+                  <li><a href="mailto:francesco.taioli@univr.it">francesco.taioli@univr.it</a></li>
+                  <li><a href="francesco.taioli@polito.it">francesco.taioli@polito.it</a></li>
+
+              </ul> -->
+                <!-- <h4 style="margin-top:10px;">
+                  Contacts
+              </h4>
+              <ul>
+                  <li><a href="mailto:francesco.taioli@univr.it">francesco.taioli@univr.it</a></li>
+                  <li><a href="francesco.taioli@polito.it">francesco.taioli@polito.it</a></li>
+
+              </ul> -->
             </li>
           </div>
         </div>
@@ -74,7 +91,11 @@
 
 
   {%- if site.posts.size > 0 -%}
-    <a href="https://scholar.google.com/citations?user=XxeU3kAAAAAJ&hl=it"><h2 class="post-list-heading">{{ page.list_title | default: "Publications" }}</h2></a>
+    <a href="https://scholar.google.com/citations?user=XxeU3kAAAAAJ&hl=it"> 
+      <h2 class="post-list-heading">{{ page.list_title | default: "Publications" }} 
+        <img class="svg-icon" style="padding-right:0px; width:1.5rem; height:1.5rem;" src="/external/Google_Scholar_logo.svg" alt="scholar"></h2>
+      
+    </a>
     <hr>
     <ul class="post-list">
       {%- for post in site.posts -%}
@@ -90,9 +111,11 @@
           {{ post.excerpt }}
         {%- endif -%}
 
-        {%- if post.authors -%}
-          <h6>{{ post.authors }}</h6>
-        {%- endif -%}
+        <!-- {%- if post.authors -%}
+          <span><i>{{ post.authors }}</i></span>
+        {%- endif -%} -->
+
+        
       </li>
       {%- endfor -%}
     </ul>
