@@ -13,4 +13,8 @@ We present Le-RNR-Map, a Language-enhanced Renderable Neural Radiance map for Vi
 
 <b>Accepted at Vision And Language Algorithmic Reasoning Workshop @ ICCV 2023 -  <a href="https://wvlar.github.io/iccv23/">VLAR</a></b>
 
+<figure class="image is-128x128">
+  <img src="/images/le_rnr_iccv.jpg">
+</figure>
+
 <a href="https://iris.polito.it/handle/11583/2982846" class="link-info">Link (Iris Polito)</a>
