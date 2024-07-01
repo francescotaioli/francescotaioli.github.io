@@ -3,7 +3,7 @@ layout: post
 title:  "Mind the Error! Detection and Localization of Instruction Errors in Vision-and-Language Navigation"
 date:   2024-03-01 17:41:26 +0200
 categories: Computer Vision
-conference: Under Review
+conference: ORAL - IROS 24
 authors: <b>Francesco Taioli</b>, et al.
 ---
 
