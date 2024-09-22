@@ -24,19 +24,20 @@
                        
                 <img class="rounded-circle mx-auto d-block" src="images/francesco_taioli.avif" alt="Francesco Taioli" height="200" width="200">
                 <span class="d-block text-center" style="margin-top:10px;" >Member of <a href="https://intelligolabs.net/">IntelliGO Labs</a></span>
+                <span><a href= "mailto: francesco.taioli@polito.it">francesco.taioli@polito.it</a></span>
                 <span class="d-block text-center" style="margin-top:10px;" >{%- include social.html -%}</span><br>
             </div>
             
           </div>
           <div class="col-md" style="text-align: justify;">
             <p>
-            I am a second-year PhD student in the National PhD Programme in Artificial Intelligence at the Polytechnic of Turin, in collaboration with the University of Verona.
+            I am a third-year PhD student in the National PhD Programme in Artificial Intelligence at the Polytechnic of Turin, in collaboration with the University of Verona.
             I am supervised by prof. <a href="https://scholar.google.com/citations?user=LbgTPRwAAAAJ&hl=en" >Marco Cristani</a>
               and prof. <a href="https://scholar.google.co.uk/citations?user=KHAIAA8AAAAJ&hl=en" >Alessandro Farinelli</a>.
             </p>
             <p>
               My research interests span the enitre area of Deep Learning, with a focus on enhancing the
-              autonomy of intelligent agents. I am currently exploring Vision Foundation models, LLMs, LMMs, and human-robot interaction.
+              autonomy of intelligent agents. I am currently exploring Foundation Models and their use in Embodied AI to improve navigation, common sense reasoning, and human-robot interaction.
             </p>
             
             <h4 style="margin-top:10px;">
@@ -67,12 +68,12 @@
 
               </ul> -->
             <!-- </li> -->
-            <h4 style="margin-top:10px;">
+            <!-- <h4 style="margin-top:10px;">
               Contact
           </h4>
           <p>
             Contact: <a href= "mailto: francesco.taioli@polito.it">francesco.taioli@polito.it</a>
-          </p>
+          </p> -->
           </div>
         </div>
       </div>
@@ -86,9 +87,17 @@
 
   {{ content }}
 
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="#news">News</a></li>
+      <li class="breadcrumb-item active" aria-current="page"><a href="#publication-list">Publications</a></li>
+    </ol>
+  </nav>
+  
+
   <hr>
   <h2 class=""><img class="svg-icon" style="padding-right:0px; width:2rem; height:2rem;" src="/external/news_50x50.png" alt="news"> News</h2>
-  <ul class="post-list">
+  <ul class="post-list" id="news">
     <li>
       <span class="post-meta">2024-06</span>
       <h5><b>IROS 24!</b> <a href="https://intelligolabs.github.io/R2RIE-CE/">Mind the Error! Detection and Localization of Instruction Errors in Vision-and-Language Navigation</a> is accepted at <a href="https://iros2024-abudhabi.org/">IROS 24</a>, with an oral presentation! <h5>
@@ -111,7 +120,7 @@
 
 
   {%- if site.posts.size > 0 -%}
-    <a href="https://scholar.google.com/citations?user=XxeU3kAAAAAJ&hl=it"> 
+    <a href="https://scholar.google.com/citations?user=XxeU3kAAAAAJ&hl=it" id="publication-list"> 
       <h2 class="post-list-heading"> <img class="svg-icon" style="padding-right:0px; width:2rem; height:2rem;" src="/external/Google_Scholar_logo.svg" alt="scholar"> {{ page.list_title | default: "Publications" }} 
         </h2>
       
