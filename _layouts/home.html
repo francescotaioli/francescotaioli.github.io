@@ -8,14 +8,14 @@
     {%- include header.html -%}
 
     <main class="page-content" aria-label="Content">
-      <div class="wrapper">
+      <div class="wrapper" style="max-width: 80%;">
         {{ content }}
       
 
-<div class="home">
+<div class="home" >
    
       <!-- INIT -->
-      <div class="container">
+      <div class="container-fluid">
         <div class="row">
           <div class="col align-self-center">
             <div class="col-auto text-center">
@@ -32,15 +32,15 @@
           <div class="col-md" style="text-align: justify;">
             <p>
             I am a third-year PhD student in the National PhD Programme in Artificial Intelligence at the Polytechnic of Turin, in collaboration with the University of Verona.
-            I am supervised by prof. <a href="https://scholar.google.com/citations?user=LbgTPRwAAAAJ&hl=en" >Marco Cristani</a>
-              and prof. <a href="https://scholar.google.co.uk/citations?user=KHAIAA8AAAAJ&hl=en" >Alessandro Farinelli</a>.
+            I am supervised by Prof. <a href="https://scholar.google.com/citations?user=LbgTPRwAAAAJ&hl=en" >Marco Cristani</a>
+              and Prof. <a href="https://scholar.google.co.uk/citations?user=KHAIAA8AAAAJ&hl=en" >Alessandro Farinelli</a>.
             </p>
             <p>
               My research interests span the entire area of Deep Learning, with a focus on enhancing the
               autonomy of intelligent agents. I am currently exploring Foundation Models and their use in Embodied AI to improve navigation, common sense reasoning, and human-robot interaction.
             </p>
 
-            <p><strong>Exciting news!</strong> I will be visiting Simon Fraser University (SFU) for four months, working under the supervision of <a href="https://angelxuanchang.github.io/" target="_blank">Angel Xuan Chang</a>. </p>
+            <p><strong>Exciting news!</strong> I will be visiting Simon Fraser University (SFU) for five months, working under the supervision of Prof. <a href="https://angelxuanchang.github.io/" target="_blank">Angel Xuan Chang</a>. </p>
             
             <h4 style="margin-top:10px;">
                 Research Interests
@@ -100,25 +100,48 @@
   <hr>
   <h2 class=""><img class="svg-icon" style="padding-right:0px; width:2rem; height:2rem;" src="/external/news_50x50.png" alt="news"> News</h2>
   <ul class="post-list" id="news">
-    <li>
-      <span class="post-meta">2024-06</span>
-      <h5><b>New pre-print available!</b> Read more at <a href="https://intelligolabs.github.io/CoIN/" target="_blank">https://intelligolabs.github.io/CoIN/</a>
-    <li>
-      <span class="post-meta">2024-06</span>
-      <h5><b>IROS 24!</b> <a href="https://intelligolabs.github.io/R2RIE-CE/">Mind the Error! Detection and Localization of Instruction Errors in Vision-and-Language Navigation</a> is accepted at <a href="https://iros2024-abudhabi.org/">IROS 24</a>, with an oral presentation! <h5>
-    </li>
-    <li>
-      <span class="post-meta">2024-06</span>
-      <h5><b>CVPR24!</b> We had a <a href="https://intelligolabs.github.io/R2RIE-CE/">paper accepted</a> at the <a href="https://embodied-ai.org/">5th Annual Embodied AI Workshop @ CVPR24</a>. Moreover, we won the <a href="https://eval.ai/web/challenges/challenge-page/2276/leaderboard/5633">MultiON challenge @ CVPR24!</a><h5>
-    </li>
-    <li>
-      <span class="post-meta">2024-06</span>
-      <h5>Invited as a speaker to talk about <i>"What's next in Embodied AI"</i> by the AIML gropu of Verona.<a href="https://docs.google.com/presentation/d/1aTMOOm9kgxEtTFGfwPhQsS0gOpwf71GPaoeG0LMae4s/edit?usp=sharing">Take a look at the slides!</a></h5>
-    </li>
-    <li>
-      <span class="post-meta">2023-07</span>
-      <h5>I attended the International Computer Vision Summer School <a href="https://iplab.dmi.unict.it/icvss2023/Home" >(ICVSS)</a> </h5>
-    </li>  
+    <!-- workshop -->
+    <li style="margin-bottom: 0.35em;">
+    <span class="post-meta">2025-05</span>
+    <h5><b>🤖 IROS Workshop Accepted!</b></h5>
+    I co-organized the <b><i>Human-aware Embodied AI</i></b> workshop, which has been accepted at IROS 2025.  
+    Workshop homepage: <a href="https://heai-iros25-workshop.github.io/" target="_blank">https://heai-iros25-workshop.github.io/</a>
+  </li>
+  <!-- coin -->
+  <li style="margin-bottom: 0.35em;">
+    <span class="post-meta">2024-06</span>
+    <h5><b>New Preprint Available!</b></h5>
+    What do human-agent bidirectional interaction, navigation, vision-language models, and hallucinations have in common? Read more at <a href="https://intelligolabs.github.io/CoIN/" target="_blank">https://intelligolabs.github.io/CoIN/</a>
+  </li>
+<li style="margin-bottom: 0.35em;">
+  <span class="post-meta">2024-06</span>
+  <h5><b>IROS 2024!</b></h5>
+  <a href="https://intelligolabs.github.io/R2RIE-CE/" target="_blank">
+    Mind the Error! Detection and Localization of Instruction Errors in Vision-and-Language Navigation
+  </a> was accepted at <a href="https://iros2024-abudhabi.org/" target="_blank">IROS 2024</a>, with an oral presentation!
+</li>
+
+<li style="margin-bottom: 0.35em;">
+  <span class="post-meta">2024-06</span>
+  <h5><b>CVPR 2024!</b></h5>
+  We had a <a href="https://intelligolabs.github.io/R2RIE-CE/" target="_blank">paper accepted</a> at the 
+  <a href="https://embodied-ai.org/" target="_blank">5th Annual Embodied AI Workshop @ CVPR 2024</a>. 
+  Moreover, we won the <a href="https://eval.ai/web/challenges/challenge-page/2276/leaderboard/5633" target="_blank">MultiON Challenge @ CVPR 2024!</a>
+</li>
+
+<li style="margin-bottom: 0.35em;">
+  <span class="post-meta">2024-06</span>
+  <h5><b>Invited Talk!</b></h5>
+  I was invited to speak on <i>"What's next in Embodied AI"</i> by the AIML group at Verona. 
+  <a href="https://docs.google.com/presentation/d/1aTMOOm9kgxEtTFGfwPhQsS0gOpwf71GPaoeG0LMae4s/edit?usp=sharing" target="_blank">Take a look at the slides!</a>
+</li>
+
+<li style="margin-bottom: 0.35em;">
+  <span class="post-meta">2023-07</span>
+  <h5><b>ICVSS 2023!</b></h5>
+  I attended the <a href="https://iplab.dmi.unict.it/icvss2023/Home" target="_blank">International Computer Vision Summer School (ICVSS)</a>.
+</li>
+ 
   </ul>
   <hr>
  
