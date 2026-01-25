@@ -1,0 +1,58 @@
+---
+const news = [
+  {
+    date: "2025-09",
+    title: "I joined Amazon as an Applied Scientist Intern!",
+  },
+  {
+    date: "2025-06",
+    title: "Paper accepted at ICCV 25 🎉",
+    description: 'What do human-agent bidirectional interaction, navigation, vision-language models, and hallucinations have in common? Read our new <a href="https://intelligolabs.github.io/CoIN/" target="_blank" rel="noopener noreferrer">ICCV paper</a>!'
+  },
+  {
+    date: "2025-05",
+    title: 'I\'ve been recognized as an <a href="https://cvpr.thecvf.com/Conferences/2025/ProgramCommittee?s=35#all-outstanding-reviewer" target="_blank" rel="noopener noreferrer">Outstanding Reviewer for CVPR25</a>!'
+  },
+  {
+    date: "2025-05",
+    title: '🤖 I co-organized the <a href="https://heai-iros25-workshop.github.io/" target="_blank" rel="noopener noreferrer">Human-aware Embodied AI workshop</a> at IROS 2025!'
+  },
+  {
+    date: "2024-06",
+    title: "Oral Presentation at  IROS 2024! 🎉",
+    description: '<a href="https://intelligolabs.github.io/R2RIE-CE/" target="_blank" rel="noopener noreferrer">Mind the Error! Detection and Localization of Instruction Errors in Vision-and-Language Navigation</a> was accepted at IROS 2024, with an oral presentation!'
+  },
+  {
+    date: "2024-06",
+    title: "CVPR 2024!",
+    description: "We had a paper accepted at the 5th Annual Embodied AI Workshop @ CVPR 2024. Moreover, we won the MultiON Challenge @ CVPR 2024!"
+  },
+  {
+    date: "2023-07",
+    title: 'I attended the <a href="https://iplab.dmi.unict.it/icvss2023/Home" target="_blank" rel="noopener noreferrer">International Computer Vision Summer School (ICVSS)</a>!'
+  }
+];
+---
+
+<section id="news" class="py-3 flex flex-col md:flex-row gap-8">
+  <div class="md:w-1/4 flex-shrink-0">
+    <h2 class="text-muted-text dark:text-dark-muted-text text-lg font-bold">
+      News
+    </h2>
+  </div>
+  <div class="md:w-3/4">
+    <div class="grid gap-4">
+      {news.map((item) => (
+        <article class="group">
+          <div class="flex items-baseline gap-3 mb-2">
+            <time class="text-muted-text dark:text-dark-muted-text text-sm font-mono whitespace-nowrap flex-shrink-0">
+              {item.date}
+            </time>
+            <h3 class="font-semibold group-hover:text-muted-text dark:group-hover:text-dark-muted-text transition-colors [&_a]:text-link [&_a]:dark:text-dark-link [&_a]:underline [&_a]:font-semibold" set:html={item.title}></h3>
+          </div>
+          {item.description && <p class="prose text-sm" set:html={item.description} />}
+        </article>
+      ))}
+    </div>
+  </div>
+</section>

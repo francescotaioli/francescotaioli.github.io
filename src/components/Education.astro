@@ -1,0 +1,64 @@
+---
+const education = [
+  {
+    date: "2025-09 - 2026-03",
+    name: "Applied Scientist Intern",
+    location: "Amazon, Madrid, Spain",
+    image: "/az1.jpg"
+  },
+  {
+    date: "2025-02 - 2025-06",
+    name: "Visiting Research Student",
+    location: "Simon Fraser University, Vancouver, Canada",
+    image: "/sfu.png"
+  },
+  {
+    date: "2022-11 - 2025-11",
+    name: "National Ph.D. Programme in Artificial Intelligence",
+    location: "Polytechnic of Turin, Turin, Italy",
+    image: "/polito.jpeg"
+  },
+  {
+    date: "2017-09 - 2022-07",
+    name: "B.Sc. & M.Sc. in Computer Science & Engineering",
+    location: "University of Verona, Verona, Italy",
+    image: "/univr.jpg"
+  }
+];
+---
+
+<section id="education" class="py-3 flex flex-col md:flex-row gap-8">
+  <div class="md:w-1/4 flex-shrink-0">
+    <h2 class="text-muted-text dark:text-dark-muted-text text-lg font-bold">
+      Education & Work
+    </h2>
+  </div>
+  <div class="md:w-3/4">
+    <div class="grid gap-4">
+      {education.map((item) => (
+        <article class="group rounded-lg border border-muted-text/10 dark:border-dark-muted-text/10 p-4 transition-all hover:border-muted-text/30 dark:hover:border-dark-muted-text/30 hover:shadow-lg">
+          <div class="flex gap-4">
+            {item.image && (
+              <img 
+                src={item.image} 
+                alt={item.name}
+                class="w-16 h-16 rounded-md object-cover flex-shrink-0"
+              />
+            )}
+            <div class="flex-1">
+              <time class="text-muted-text dark:text-dark-muted-text text-sm font-mono block mb-1">
+                {item.date}
+              </time>
+              <h3 class="font-semibold mb-1 group-hover:text-muted-text dark:group-hover:text-dark-muted-text transition-colors">
+                {item.name}
+              </h3>
+              <p class="prose text-sm">
+                {item.location}
+              </p>
+            </div>
+          </div>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>
