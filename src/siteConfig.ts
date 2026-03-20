@@ -5,9 +5,9 @@ import type {
 } from "@/types.ts";
 
 export const SITE: SiteConfiguration = {
-  title: "Francesco Taioli - PhD Candidate in Artificial Intelligence",
+  title: "Francesco Taioli - PhD in Artificial Intelligence",
   description:
-    "Francesco Taioli is a PhD Candidate in Artificial Intelligence at Polytechnic of Turin, specializing in Deep Learning, Foundation Models (VLMs, LLMs, VLAs), and Embodied AI for autonomous intelligent agents, navigation, and human-robot interaction.",
+    "Francesco Taioli is a PhD in Artificial Intelligence at Polytechnic of Turin, specializing in Deep Learning, Foundation Models (VLMs, LLMs, VLAs), and Embodied AI for autonomous intelligent agents, navigation, and human-robot interaction.",
   href: "https://francescotaioli.github.io",
   author: "Francesco Taioli",
   locale: "en-US",
