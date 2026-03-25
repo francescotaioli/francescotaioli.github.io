@@ -46,3 +46,5 @@ All commands are run from the root of the project, from a terminal:
 ## Further reading
 
 Read the [documentation for Barebones](https://docs.superwebthemes.com), join our [Discord server](https://discord.gg/V5MCBCsAjJ), or find me on X (Twitter) at [@boogerbuttcheek](https://x.com/boogerbuttcheek).
+
+# for conference reviewer ->  https://ras.papercept.net/conferences/scripts/activityreport.pl
