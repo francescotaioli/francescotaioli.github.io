@@ -4,9 +4,981 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DiTailed - Coming Soon</title>
+    <title>DiTailed: Ensuring Visual Object Consistency in Text-Image-to-Image Flow Matching Models</title>
+    <meta name="description" content="DiTailed introduces ABO-Edit, a 12k+ triplet benchmark, and FlowMirror, a parameter-free auxiliary loss that improves visual object consistency in rectified flow image editing models. ECCV 2026.">
+    <meta property="og:title" content="DiTailed: Visual Object Consistency in Flow Matching Models">
+    <meta property="og:description" content="A parameter-free auxiliary loss for improving object consistency in text-image-to-image editing. ECCV 2026.">
+    <meta property="og:type" content="website">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style is:inline>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        :root {
+            --c-bg: #fafafa;
+            --c-surface: #ffffff;
+            --c-text: #1a1a2e;
+            --c-text-secondary: #4a4a6a;
+            --c-accent: #2563eb;
+            --c-accent-soft: #dbeafe;
+            --c-border: #e5e7eb;
+            --c-badge: #bbf7d0;
+            --c-badge-text: #166534;
+            --c-badge-border: #4ade80;
+            --c-nav-bg: rgba(250, 250, 250, 0.85);
+            --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            --font-mono: 'JetBrains Mono', monospace;
+            --max-w: 1100px;
+            --section-gap: 3rem;
+        }
+
+        .dark {
+            --c-bg: #1c1c2e;
+            --c-surface: #262640;
+            --c-text: #e8e8f0;
+            --c-text-secondary: #a0a0c0;
+            --c-accent: #60a5fa;
+            --c-accent-soft: #1e3a5f;
+            --c-border: #363650;
+            --c-badge: #052e16;
+            --c-badge-text: #86efac;
+            --c-badge-border: #22c55e;
+            --c-nav-bg: rgba(28, 28, 46, 0.85);
+        }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: var(--font-sans);
+            background: var(--c-bg);
+            color: var(--c-text);
+            line-height: 1.7;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        /* Navigation */
+        .top-nav {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: var(--c-nav-bg);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--c-border);
+            padding: 0 1.5rem;
+        }
+
+        .nav-inner {
+            max-width: var(--max-w);
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 3.2rem;
+        }
+
+        .nav-brand {
+            font-weight: 700;
+            font-size: 0.9rem;
+            color: var(--c-text);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .nav-brand img {
+            height: 22px;
+            width: auto;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 0.2rem;
+            list-style: none;
+            overflow-x: auto;
+        }
+
+        .nav-links a {
+            font-size: 0.78rem;
+            font-weight: 500;
+            color: var(--c-text-secondary);
+            text-decoration: none;
+            padding: 0.4rem 0.65rem;
+            border-radius: 6px;
+            transition: color 0.2s, background 0.2s;
+            white-space: nowrap;
+        }
+
+        .nav-links a:hover {
+            color: var(--c-accent);
+            background: var(--c-accent-soft);
+        }
+
+        .theme-toggle {
+            background: none;
+            border: 1px solid var(--c-border);
+            border-radius: 8px;
+            width: 34px;
+            height: 34px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--c-text-secondary);
+            transition: color 0.2s, border-color 0.2s;
+            flex-shrink: 0;
+            margin-left: 0.5rem;
+        }
+
+        .theme-toggle:hover {
+            color: var(--c-accent);
+            border-color: var(--c-accent);
+        }
+
+        .theme-toggle svg {
+            width: 18px;
+            height: 18px;
+        }
+
+        .icon-sun, .icon-moon { display: none; }
+        .dark .icon-moon { display: block; }
+        .dark .icon-sun { display: none; }
+        :not(.dark) .icon-sun { display: block; }
+        :not(.dark) .icon-moon { display: none; }
+
+        /* Hero */
+        .hero {
+            padding: 4rem 1.5rem 3rem;
+            text-align: center;
+            max-width: var(--max-w);
+            margin: 0 auto;
+        }
+
+        .venue-badge {
+            display: inline-block;
+            background: var(--c-badge);
+            color: var(--c-badge-text);
+            border: 1.5px solid var(--c-badge-border);
+            font-size: 1rem;
+            font-weight: 600;
+            padding: 0.35rem 0.9rem;
+            border-radius: 100px;
+            letter-spacing: 0.04em;
+            margin-bottom: 1.5rem;
+            text-transform: uppercase;
+        }
+
+        .hero h1 {
+            font-size: clamp(1.6rem, 4vw, 2.8rem);
+            font-weight: 700;
+            line-height: 1.2;
+            margin-bottom: 0.5rem;
+            letter-spacing: -0.02em;
+        }
+
+        .hero h1 span {
+            color: var(--c-accent);
+        }
+
+        .subtitle {
+            font-size: clamp(1rem, 2vw, 1.2rem);
+            color: var(--c-text-secondary);
+            max-width: 720px;
+            margin: 0.8rem auto 0;
+            font-weight: 400;
+        }
+
+        /* Authors */
+        .authors {
+            margin-top: 2rem;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 0.3rem 1.2rem;
+            font-size: 0.95rem;
+        }
+
+        .authors span {
+            white-space: nowrap;
+        }
+
+        .authors .affiliation {
+            font-size: 0.82rem;
+            color: var(--c-text-secondary);
+            vertical-align: super;
+            font-weight: 500;
+        }
+
+        .affiliations-list {
+            margin-top: 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 0.6rem;
+        }
+
+        .affiliation-item {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.85rem;
+            color: var(--c-text);
+            font-weight: 500;
+            padding: 0.45rem 1rem;
+            border-radius: 100px;
+            border: 1px solid var(--c-border);
+            background: var(--c-surface);
+            transition: border-color 0.2s;
+        }
+
+        .affiliation-item:hover {
+            border-color: var(--c-accent);
+        }
+
+        a.affiliation-item {
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .affiliation-sep {
+            width: 1px;
+            height: 24px;
+            background: var(--c-border);
+            margin: 0 0.25rem;
+        }
+
+        .affiliation-item img {
+            height: 20px;
+            width: auto;
+            object-fit: contain;
+        }
+
+        .affiliation-item sup {
+            font-size: 0.65rem;
+            margin-right: -0.1rem;
+            color: var(--c-text-secondary);
+        }
+
+        /* Links bar */
+        .links-bar {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 0.75rem;
+            margin-top: 2rem;
+        }
+
+        .link-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.6rem 1.2rem;
+            border-radius: 8px;
+            font-size: 0.88rem;
+            font-weight: 500;
+            text-decoration: none;
+            transition: all 0.2s ease;
+            border: 1px solid var(--c-border);
+            color: var(--c-text);
+            background: var(--c-surface);
+        }
+
+        .link-btn:hover {
+            border-color: var(--c-accent);
+            color: var(--c-accent);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.1);
+        }
+
+        .link-btn svg {
+            width: 18px;
+            height: 18px;
+            flex-shrink: 0;
+        }
+
+        /* Sections */
+        section {
+            max-width: var(--max-w);
+            margin: 0 auto;
+            padding: 0 1.5rem;
+            margin-bottom: var(--section-gap);
+        }
+
+        .section-label {
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--c-accent);
+            margin-bottom: 0.6rem;
+        }
+
+        section h2 {
+            font-size: clamp(1.3rem, 3vw, 1.9rem);
+            font-weight: 700;
+            margin-bottom: 1rem;
+            letter-spacing: -0.01em;
+        }
+
+        section p {
+            color: var(--c-text-secondary);
+            font-size: 1rem;
+        }
+
+        /* Figures */
+        .figure-container {
+            margin: 2rem 0;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid var(--c-border);
+            background: var(--c-surface);
+        }
+
+        .figure-container img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .figure-caption {
+            padding: 1rem 1.25rem;
+            font-size: 0.85rem;
+            color: var(--c-text-secondary);
+            border-top: 1px solid var(--c-border);
+            line-height: 1.5;
+        }
+
+        .figure-caption strong {
+            color: var(--c-text);
+        }
+
+        /* Full-width figure variant */
+        .figure-wide {
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* Key findings cards */
+        .findings-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1.25rem;
+            margin-top: 1.5rem;
+        }
+
+        @media (min-width: 640px) {
+            .findings-grid {
+                grid-template-columns: 1fr 1fr 1fr;
+            }
+        }
+
+        .finding-card {
+            background: var(--c-surface);
+            border: 1px solid var(--c-border);
+            border-radius: 12px;
+            padding: 1.5rem;
+            transition: border-color 0.2s;
+        }
+
+        .finding-card:hover {
+            border-color: var(--c-accent);
+        }
+
+        .finding-card .number {
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: var(--c-accent);
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            margin-bottom: 0.5rem;
+        }
+
+        .finding-card h3 {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            line-height: 1.3;
+        }
+
+        .finding-card p {
+            font-size: 0.88rem;
+            color: var(--c-text-secondary);
+            line-height: 1.5;
+        }
+
+        .card-link {
+            display: inline-block;
+            margin-top: 0.75rem;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--c-accent);
+            text-decoration: none;
+            transition: opacity 0.2s;
+        }
+
+        .card-link:hover {
+            opacity: 0.7;
+        }
+
+        /* Results table */
+        .table-wrapper {
+            overflow-x: auto;
+            margin: 1.5rem 0;
+            border-radius: 12px;
+            border: 1px solid var(--c-border);
+            background: var(--c-surface);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.85rem;
+            white-space: nowrap;
+        }
+
+        thead {
+            background: var(--c-bg);
+        }
+
+        th {
+            padding: 0.9rem 1rem;
+            font-weight: 600;
+            text-align: left;
+            font-size: 0.78rem;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            color: var(--c-text-secondary);
+            border-bottom: 1px solid var(--c-border);
+        }
+
+        td {
+            padding: 0.75rem 1rem;
+            border-bottom: 1px solid var(--c-border);
+            font-family: var(--font-mono);
+            font-size: 0.82rem;
+        }
+
+        tr:last-child td { border-bottom: none; }
+
+        .row-highlight {
+            background: var(--c-accent-soft);
+        }
+
+        .row-highlight td {
+            font-weight: 600;
+        }
+
+        td.method-name {
+            font-family: var(--font-sans);
+            font-weight: 500;
+        }
+
+        .table-section-header td {
+            font-family: var(--font-sans);
+            font-weight: 600;
+            font-size: 0.8rem;
+            color: var(--c-text-secondary);
+            padding-top: 1rem;
+            border-bottom: none;
+            font-style: italic;
+        }
+
+        /* Abstract / TLDR */
+        .tldr {
+            background: var(--c-surface);
+            border: 1px solid var(--c-border);
+            border-left: 3px solid var(--c-accent);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .tldr p {
+            max-width: none;
+            font-size: 0.95rem;
+        }
+
+        /* BibTeX */
+        .bibtex-block {
+            background: var(--c-surface);
+            border: 1px solid var(--c-border);
+            border-radius: 8px;
+            padding: 1.25rem;
+            margin-top: 1rem;
+            position: relative;
+            overflow-x: auto;
+        }
+
+        .bibtex-block pre {
+            font-family: var(--font-mono);
+            font-size: 0.78rem;
+            line-height: 1.6;
+            color: var(--c-text-secondary);
+            margin: 0;
+        }
+
+        .copy-btn {
+            position: absolute;
+            top: 0.75rem;
+            right: 0.75rem;
+            background: var(--c-bg);
+            border: 1px solid var(--c-border);
+            border-radius: 6px;
+            padding: 0.4rem 0.6rem;
+            cursor: pointer;
+            font-size: 0.72rem;
+            font-weight: 500;
+            color: var(--c-text-secondary);
+            transition: all 0.2s;
+        }
+
+        .copy-btn:hover {
+            color: var(--c-accent);
+            border-color: var(--c-accent);
+        }
+
+        /* Divider */
+        .divider {
+            border: none;
+            height: 1px;
+            background: var(--c-border);
+            max-width: var(--max-w);
+            margin: var(--section-gap) auto;
+        }
+
+        /* Footer */
+        .page-footer {
+            text-align: center;
+            padding: 2rem 1.5rem 3rem;
+            font-size: 0.82rem;
+            color: var(--c-text-secondary);
+            max-width: var(--max-w);
+            margin: 0 auto;
+        }
+
+        /* Animations */
+        @media (prefers-reduced-motion: no-preference) {
+            .fade-in {
+                opacity: 0;
+                transform: translateY(16px);
+                animation: fadeUp 0.6s ease forwards;
+            }
+
+            @keyframes fadeUp {
+                to { opacity: 1; transform: translateY(0); }
+            }
+
+            .fade-in:nth-child(2) { animation-delay: 0.1s; }
+            .fade-in:nth-child(3) { animation-delay: 0.2s; }
+            .fade-in:nth-child(4) { animation-delay: 0.3s; }
+        }
+
+        /* Mobile menu */
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: 1px solid var(--c-border);
+            border-radius: 8px;
+            width: 34px;
+            height: 34px;
+            cursor: pointer;
+            align-items: center;
+            justify-content: center;
+            color: var(--c-text-secondary);
+            margin-left: 0.5rem;
+        }
+
+        .mobile-menu-btn svg {
+            width: 18px;
+            height: 18px;
+        }
+
+        .mobile-nav {
+            display: none;
+            position: fixed;
+            top: 3.2rem;
+            left: 0;
+            right: 0;
+            background: var(--c-nav-bg);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--c-border);
+            padding: 0.75rem 1.5rem;
+            z-index: 99;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+
+        .mobile-nav.open {
+            display: flex;
+        }
+
+        .mobile-nav a {
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: var(--c-text-secondary);
+            text-decoration: none;
+            padding: 0.5rem 0.75rem;
+            border-radius: 6px;
+            transition: color 0.2s, background 0.2s;
+        }
+
+        .mobile-nav a:hover {
+            color: var(--c-accent);
+            background: var(--c-accent-soft);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            :root { --section-gap: 2.5rem; }
+            .hero { padding-top: 2.5rem; }
+            .authors { font-size: 0.88rem; }
+            .nav-links { display: none; }
+            .mobile-menu-btn { display: flex; }
+            .affiliation-sep { display: none; }
+        }
+    </style>
 </head>
-<body style="font-family: sans-serif; display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0;">
-    <h1>DiTailed - Coming Soon</h1>
+<body>
+    <!-- Sticky Navigation -->
+    <nav class="top-nav">
+        <div class="nav-inner">
+            <a href="#top" class="nav-brand">
+                <img src="/az.png" alt="Amazon">
+                
+            </a>
+            <div class="nav-links">
+                <a href="#spatial-control">Spatial Control</a>
+                <a href="#motivation">Motivation</a>
+                <a href="#insight">Key Insight</a>
+                <a href="#method">Method</a>
+                <a href="#results">Results</a>
+            </div>
+            <div style="display: flex; align-items: center;">
+                <button class="theme-toggle" id="theme-toggle" aria-label="Toggle dark mode">
+                    <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+                    <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+                </button>
+                <button class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Open menu">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+                </button>
+            </div>
+        </div>
+    </nav>
+    <div class="mobile-nav" id="mobile-nav">
+        <a href="#spatial-control">Spatial Control</a>
+        <a href="#motivation">Motivation</a>
+        <a href="#insight">Key Insight</a>
+        <a href="#method">Method</a>
+        <a href="#results">Results</a>
+    </div>
+
+    <!-- Hero -->
+    <header class="hero fade-in" id="top">
+        <div class="venue-badge">ECCV 2026</div>
+        <h1><span>DiTailed:</span> Ensuring Visual Object Consistency in Text-Image-to-Image Flow Matching Models</h1>
+        
+        <div class="authors">
+            <span>Francesco Taioli<span class="affiliation">1</span></span>
+            <span>Daniel Coelho<span class="affiliation">1</span></span>
+            <span>Iaroslav Melekhov<span class="affiliation">1</span></span>
+            <span>Roberto Alcover-Couso<span class="affiliation">1</span></span>
+            <span>Jose Miguel Grande Saiz<span class="affiliation">1</span></span>
+        </div>
+        <div class="authors" style="margin-top: 0.3rem;">
+            <span>Virginia Fernandez Arguedas<span class="affiliation">1</span></span>
+            <span>Artur Bekasov<span class="affiliation">2</span></span>
+        </div>
+        <div class="affiliations-list">
+            <div class="affiliation-item">
+                <img src="/az.png" alt="Amazon logo">
+                <span><sup>1</sup> <strong>Amazon</strong></span>
+            </div>
+            <div class="affiliation-item">
+                <img src="/faculty.png" alt="Faculty logo">
+                <span><sup>2</sup> Faculty</span>
+            </div>
+            <span class="affiliation-sep"></span>
+            <a href="#" class="affiliation-item" aria-label="Paper PDF">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 16px; height: 16px;"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+                <span>Paper</span>
+            </a>
+            <a href="#" class="affiliation-item" aria-label="Dataset">
+                <img src="/hf-logo.png" alt="Hugging Face">
+                <span>Dataset</span>
+            </a>
+        </div>
+    </header>
+
+    <!-- Teaser -->
+    <section class="fade-in">
+        <div class="figure-wide figure-container">
+            <img src="/ditailed/teaser.webp" alt="DiTailed teaser: source lifestyle images paired with editing prompts produce studio-quality outputs with preserved object attributes" loading="eager" width="1800" height="600">
+            <div class="figure-caption">
+                <strong>ABO-Edit benchmark.</strong> Each triplet consists of a <i>source lifestyle image</i>, an <i>editing prompt</i> specifying rotation and background removal, and a <i>ground-truth target</i> rendered from artist-designed 3D assets. Our method (FlowMirror) improves object consistency across geometry, texture, and fine-grained details.
+            </div>
+        </div>
+    </section>
+
+    <!-- TL;DR / Abstract -->
+    <section class="fade-in">
+        <div class="section-label">Abstract</div>
+        <div class="tldr">
+            <p>
+                Despite remarkable progress in text-guided image editing, generative models frequently fail to preserve visual object consistency, defined as the preservation of a subject's key attributes throughout the editing process.
+                We address this limitation through three contributions.
+                <br>
+                First, we introduce <strong>ABO-Edit</strong>, a dataset specifically designed to study object consistency, comprising over 12,000 triplets of source images, editing prompts, and high-quality target images rendered from artist-designed 3D assets, with multi-view coverage and human-verified quality control.
+                Second, we uncover an overlooked property of image-editing rectified flow models: the conditioning embedding space, not directly supervised during training, encodes a prediction of the final generated image even at high noise levels.
+                Third, exploiting this finding, we propose <strong>FlowMirror</strong>, a parameter-free auxiliary loss that supervises this conditioning embedding space.
+                Without architectural changes, our method improves generation quality across several metrics over baselines.
+            </p>
+        </div>
+    </section>
+
+    <hr class="divider">
+
+    <!-- Key contributions -->
+    <section class="fade-in">
+        <div class="section-label">Three contributions</div>
+        <div class="findings-grid">
+            <div class="finding-card">
+                <div class="number">01 &mdash; Dataset</div>
+                <h3>ABO-Edit Dataset</h3>
+                <p>12,000+ triplets of source images, editing prompts, and high-quality targets rendered (with Blender) from artist-designed 3D models.
+                    Each target covers three views of the same object (multi-view coverage) and each sample is human-verified.</p>
+                <a href="#dataset" class="card-link">See dataset &rarr;</a>
+            </div>
+            <div class="finding-card">
+                <div class="number">02 &mdash; Insight</div>
+                <h3>Predictive Conditioning Space</h3>
+                <p>We uncover that rectified flow models encode a prediction of the final output in the conditioning embedding space, even at high noise levels.</p>
+                <a href="#insight" class="card-link">Explore insight &rarr;</a>
+            </div>
+            <div class="finding-card">
+                <div class="number">03 &mdash; Method</div>
+                <h3>FlowMirror</h3>
+                <p>A parameter-free auxiliary loss that supervises the conditioning embedding space. No architecture changes, negligible compute overhead, consistent improvements across metrics.</p>
+                <a href="#method" class="card-link">View method &rarr;</a>
+            </div>
+        </div>
+    </section>
+
+    <hr class="divider">
+
+    <!-- Problem: The consistency challenge -->
+    <section class="fade-in" id="motivation">
+        <div class="section-label">Motivation</div>
+        <h2>The object consistency problem</h2>
+        <p>Even with straightforward <i>editing</i> prompts specifying background removal or basic rotations given an image, state-of-the-art models frequently fail to maintain <strong>visual object consistency</strong>: geometry is distorted, textures are altered, and fine-grained details disappear.</p>
+        <div class="figure-container">
+            <img src="/ditailed/intro_failures.webp" alt="Failure cases: pillow patterns altered, cup holder missing, sofa geometry entirely changed" loading="lazy" width="1800" height="400">
+            <div class="figure-caption">
+                <strong>Visual object inconsistencies in current models.</strong> (Left) pillow patterns are not preserved; (center) cup holder and rivets are missing or poorly reconstructed; (right) sofa geometry is entirely altered with inconsistent texture.
+            </div>
+        </div>
+    </section>
+
+    <hr class="divider">
+
+    <!-- Dataset -->
+    <section class="fade-in" id="dataset">
+        <div class="section-label">Dataset</div>
+        <h2>ABO-Edit: a benchmark for visual object consistency</h2>
+        <p>ABO-Edit is built on the Amazon Berkeley Objects (ABO) dataset and contains over 12,000 triplets of source lifestyle images, editing prompts with degree-level rotation angles, and ground-truth targets rendered from artist-designed 3D models using Blender at 1024&times;1024 resolution. Each product is rendered from <strong>three viewpoints</strong> (left, front, right), enabling evaluation of visual consistency under orientation changes. All samples are validated through human quality control via crowdsourcing.</p>
+        <div class="figure-container">
+            <img src="/ditailed/rotation_examples.webp" alt="ABO-Edit dataset samples showing source lifestyle images paired with multi-view rendered targets at different rotation angles" loading="lazy" width="1600" height="800">
+            <div class="figure-caption">
+                <strong>ABO-Edit samples.</strong> Source lifestyle images (left) paired with ground-truth targets rendered at precisely specified rotation angles. The dataset covers diverse product types including furniture, wall art, and decorative items, with fine-grained angular annotations.
+            </div>
+        </div>
+    </section>
+
+    <hr class="divider">
+
+    <!-- Key Insight: Internal Representations -->
+    <section class="fade-in" id="insight">
+        <div class="section-label">Key Insight</div>
+        <h2>What happens inside the model?</h2>
+        <p>In rectified flow editing models, the predicted velocity is computed solely from the noisy input, while the conditioning output h<sub>L</sub><sup>cond</sup> is discarded at inference. Yet this representation remains coupled to the generation process: it participates in attention computations across all transformer layers and receives gradients during training. This raises a question: <em>what information does it encode, and how does it evolve during denoising?</em></p>
+        <p style="margin-top: 0.75rem;">We decode h<sub>L</sub><sup>cond</sup> using the VAE decoder at various timesteps and discover two distinct behavioral patterns. Models in the FLUX family maintain representations of the conditioning image throughout denoising. In contrast, Qwen-based models encode a prediction of the <strong>final generated image</strong> in h<sub>L</sub><sup>cond</sup>, even at high noise levels (t &approx; 1) &mdash; a property that is never explicitly supervised during training.</p>
+        <div class="figure-wide figure-container">
+            <img src="/ditailed/internal_repr.webp" alt="Internal representation comparison across FLUX and Qwen model families at different timesteps" loading="lazy" width="2000" height="600">
+            <div class="figure-caption">
+                <strong>Internal representations across models.</strong> FLUX models maintain representations of the conditioning image throughout denoising, whereas Qwen models encode the <em>final prediction</em> in the conditioning embedding space even at high noise levels (t &approx; 1). 
+                <strong>Our auxiliary loss (bottom row) enforces this behavior at early timestep, preserving the original geometry.</strong>
+            </div>
+        </div>
+        <p> Remarkably, this latent prediction exhibits <strong>higher similarity to the final output than the velocity estimate</strong> at early denoising steps, providing insight into the effective number of inference steps required for convergence, as shown in the following Figure:  </p>
+        <div class="figure-container" style="margin-top: 1.5rem;">
+            <img src="/ditailed/similarity_vs_step.webp" alt="Cosine similarity between predictions and final output across timesteps" loading="lazy" width="1600" height="500">
+            <div class="figure-caption">
+                <strong>Temporal evolution of predictions during denoising.</strong> With our auxiliary loss, the model's prediction in the conditioning space (orange) exhibits higher similarity to the final output than the velocity estimate (green) at early timesteps. At high noise (t=1), the gap is substantial: <strong>0.823 vs 0.723</strong>.
+            </div>
+        </div>
+    </section>
+
+    <hr class="divider">
+
+    <!-- Method -->
+    <section class="fade-in" id="method">
+        <div class="section-label">Method</div>
+        <h2>FlowMirror: when conditioning mirrors the generation</h2>
+        <p>The observations above reveal that certain model families naturally encode the final output in h<sub>L</sub><sup>cond</sup>, and that these predictions stabilize early in denoising. Leveraging these insights, we hypothesize that explicitly supervising h<sub>L</sub><sup>cond</sup> to match the target amplifies this beneficial behavior: it encourages the model to form accurate output representations early, while providing auxiliary gradient signal without additional parameters.</p>
+        <p style="margin-top: 0.75rem;">We thus propose a parameter-free multi-scale auxiliary loss that supervises the conditioning output using the VAE latent of the target image. Operating entirely in latent space (without invoking the decoder), the loss decomposes into high-frequency (detail preservation) and low-frequency (structural) components via a Laplacian-pyramid decomposition. Crucially, this incurs negligible computational overhead and requires no architectural changes.</p>
+        <div class="figure-container">
+            <img src="/ditailed/architecture.webp" alt="FlowMirror architecture overview showing the auxiliary loss supervision of the conditioning embedding space" loading="lazy" width="1800" height="450">
+            <div class="figure-caption">
+                <strong>Overview of FlowMirror.</strong> Given noisy input, conditioning image embedding, timestep, and text embeddings, the DiT predicts velocity while producing the conditioning output h<sub>L</sub><sup>cond</sup>. We supervise it against the target latent using a parameter-free, multi-scale decomposition that captures both fine details and global structure.
+            </div>
+        </div>
+    </section>
+
+    <hr class="divider">
+
+    <!-- Results -->
+    <section class="fade-in" id="results">
+        <div class="section-label">Results</div>
+
+        <!-- Spatial Control -->
+        <div id="spatial-control" style="margin-top: 2rem;">
+            <h3 style="font-size: 1.2rem; font-weight: 600; margin-bottom: 0.5rem;">Degree-level viewpoint control</h3>
+            <p>Fine-tuning on ABO-Edit enables precise angular control (mean error &lt; 2.5&deg;) <strong>while maintaining visual consistency across generated views.</strong></p>
+            <div class="figure-container">
+                <img src="/ditailed/rotation_control.webp" alt="Multi-view generation showing precise rotation control at different angles" loading="lazy" width="1600" height="800">
+                <div class="figure-caption">
+                    <strong>Precise spatial control.</strong> Our fine-tuned model generates novel views at varying rotation angles with fine-grained angular accuracy and strong visual consistency across all orientations.
+                </div>
+            </div>
+        </div>
+        <h3 style="font-size: 1.2rem; font-weight: 600; margin-bottom: 0.5rem;">Quantitative results</h3>
+        <p>FlowMirror consistently improves metrics across two architectures (FLUX and Qwen) with lower variance, indicating more stable optimization.</p>
+
+        <div class="table-wrapper">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Method</th>
+                        <th>FID &darr;</th>
+                        <th>SSIM &uarr;</th>
+                        <th>PSNR &uarr;</th>
+                        <th>LPIPS &darr;</th>
+                        <th>CLIP &uarr;</th>
+                        <th>DINOv2 &uarr;</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="table-section-header"><td colspan="7">Zero-shot baselines</td></tr>
+                    <tr>
+                        <td class="method-name">Kandinsky 5.0</td>
+                        <td>88.60</td><td>.644</td><td>9.14</td><td>.579</td><td>83.55</td><td>56.74</td>
+                    </tr>
+                    <tr>
+                        <td class="method-name">FLUX.1 Kontext</td>
+                        <td>59.32</td><td>.789</td><td>12.17</td><td>.345</td><td>90.76</td><td>78.14</td>
+                    </tr>
+                    <tr>
+                        <td class="method-name">FLUX.2</td>
+                        <td>53.67</td><td>.803</td><td>12.80</td><td>.320</td><td>92.66</td><td>83.67</td>
+                    </tr>
+                    <tr>
+                        <td class="method-name">Qwen-2511</td>
+                        <td>64.23</td><td>.805</td><td>12.73</td><td>.336</td><td>89.17</td><td>77.83</td>
+                    </tr>
+                    <tr>
+                        <td class="method-name">Qwen-2509</td>
+                        <td>57.66</td><td>.818</td><td>12.76</td><td>.312</td><td>91.95</td><td>82.30</td>
+                    </tr>
+                    <tr class="table-section-header"><td colspan="7">Fine-tuned on ABO-Edit</td></tr>
+                    <tr>
+                        <td class="method-name">FLUX.1 Kontext</td>
+                        <td>31.68</td><td>.883</td><td>18.62</td><td>.149</td><td>96.20</td><td>90.99</td>
+                    </tr>
+                    <tr class="row-highlight">
+                        <td class="method-name">&nbsp;&nbsp;+ FlowMirror (ours)</td>
+                        <td>31.26</td><td>.883</td><td>18.67</td><td>.148</td><td>96.30</td><td>91.25</td>
+                    </tr>
+                    <tr>
+                        <td class="method-name">Qwen-2509</td>
+                        <td>26.48</td><td>.893</td><td>19.64</td><td>.112</td><td>97.21</td><td>93.98</td>
+                    </tr>
+                    <tr class="row-highlight">
+                        <td class="method-name">&nbsp;&nbsp;+ FlowMirror (ours)</td>
+                        <td>25.91</td><td>.894</td><td>19.79</td><td>.111</td><td style="font-weight: 400;">97.17</td><td style="font-weight: 400;">93.94</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <p style="margin-top: 0.75rem; font-size: 0.85rem;">All fine-tuned models trained 3&times; with different seeds. Mean reported. Best per section in highlighted rows. Human evaluation: our method preferred <strong>4.4 percentage points</strong> more often than baseline.</p>
+    </section>
+
+    <!-- BibTeX (commented out for now)
+    <hr class="divider">
+    <section class="fade-in" id="citation">
+        <div class="section-label">Citation</div>
+        <h2>BibTeX</h2>
+        <div class="bibtex-block">
+            <button class="copy-btn" id="copy-bibtex-btn">Copy</button>
+            <pre id="bibtex" set:html={`@inproceedings{taioli2026ditailed,
+  title={DiTailed: Ensuring Visual Object Consistency in Text-Image-to-Image Flow Matching Models},
+  author={Taioli, Francesco and Coelho, Daniel and Melekhov, Iaroslav and Alcover-Couso, Roberto and Grande Saiz, Jose Miguel and Fernandez Arguedas, Virginia and Bekasov, Artur},
+  booktitle={European Conference on Computer Vision (ECCV)},
+  year={2026}
+}`}></pre>
+        </div>
+    </section>
+    -->
+
+    <!-- Footer -->
+    <footer class="page-footer">
+        <p>DiTailed &middot; ECCV 2026 &middot; Amazon</p>
+    </footer>
+
+    <script>
+        // Theme toggle
+        const toggle = document.getElementById('theme-toggle');
+        const html = document.documentElement;
+
+        function setTheme(dark) {
+            html.classList.toggle('dark', dark);
+            localStorage.setItem('ditailed-theme', dark ? 'dark' : 'light');
+        }
+
+        // Init from localStorage, default to light
+        const stored = localStorage.getItem('ditailed-theme');
+        if (stored === 'dark') setTheme(true);
+        else setTheme(false);
+
+        toggle?.addEventListener('click', () => {
+            setTheme(!html.classList.contains('dark'));
+        });
+
+        // Mobile menu
+        const menuBtn = document.getElementById('mobile-menu-btn');
+        const mobileNav = document.getElementById('mobile-nav');
+        menuBtn?.addEventListener('click', () => {
+            mobileNav?.classList.toggle('open');
+        });
+        mobileNav?.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => {
+                mobileNav?.classList.remove('open');
+            });
+        });
+
+        // Copy BibTeX (commented out for now)
+        // document.getElementById('copy-bibtex-btn')?.addEventListener('click', function() {
+        //     const bibtex = document.getElementById('bibtex')?.textContent || '';
+        //     navigator.clipboard.writeText(bibtex).then(() => {
+        //         this.textContent = 'Copied!';
+        //         setTimeout(() => { this.textContent = 'Copy'; }, 2000);
+        //     });
+        // });
+    </script>
 </body>
 </html>
