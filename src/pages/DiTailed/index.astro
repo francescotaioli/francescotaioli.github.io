@@ -245,6 +245,11 @@
             cursor: pointer;
         }
 
+        button.affiliation-item {
+            cursor: pointer;
+            font-family: inherit;
+        }
+
         .affiliation-sep {
             width: 1px;
             height: 24px;
@@ -695,6 +700,10 @@
             <span>Virginia Fernandez Arguedas<span class="affiliation">1</span></span>
             <span>Artur Bekasov<span class="affiliation">2</span></span>
         </div>
+        <p style="margin-top: 0.8rem; font-size: 0.78rem; color: var(--c-text-secondary); font-family: var(--font-mono); word-break: break-all; max-width: 600px; margin-left: auto; margin-right: auto; text-align: center;">
+            <sup>1</sup>{'{'}ftaioli,dfcoelho,imlkhv,ralcover,jgrande,virfer{'}'}@amazon.com<br>
+            <sup>2</sup>artur.bekasov@faculty.ai
+        </p>
         <div class="affiliations-list">
             <div class="affiliation-item">
                 <img src="/az.png" alt="Amazon logo">
@@ -705,14 +714,14 @@
                 <span><sup>2</sup> Faculty</span>
             </div>
             <span class="affiliation-sep"></span>
-            <a href="#" class="affiliation-item" aria-label="Paper PDF">
+            <button class="affiliation-item soon-btn" aria-label="Paper PDF (coming soon)" onclick="this.querySelector('span').textContent='SOON'; setTimeout(() => this.querySelector('span').textContent='Paper', 1500)">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 16px; height: 16px;"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
                 <span>Paper</span>
-            </a>
-            <a href="#" class="affiliation-item" aria-label="Dataset">
+            </button>
+            <button class="affiliation-item soon-btn" aria-label="Dataset (coming soon)" onclick="this.querySelector('span').textContent='SOON'; setTimeout(() => this.querySelector('span').textContent='Dataset', 1500)">
                 <img src="/hf-logo.png" alt="Hugging Face">
                 <span>Dataset</span>
-            </a>
+            </button>
         </div>
     </header>
 
@@ -937,7 +946,7 @@
 
     <!-- Footer -->
     <footer class="page-footer">
-        <p>DiTailed &middot; ECCV 2026 &middot; Amazon</p>
+        <p>DiTailed &middot; ECCV 2026 &middot; Amazon  &middot; ftaioli@amazon.com</p>
     </footer>
 
     <script>
